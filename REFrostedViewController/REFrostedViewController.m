@@ -30,6 +30,8 @@
 #import "UIViewController+REFrostedViewController.h"
 #import "RECommonFunctions.h"
 
+#define IPAD UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
+
 @interface REFrostedViewController ()
 
 @property (assign, readwrite, nonatomic) CGFloat imageViewWidth;
@@ -180,7 +182,18 @@
     self.containerViewController.animateApperance = animateApperance;
     if (self.automaticSize) {
         if (self.direction == REFrostedViewControllerDirectionLeft || self.direction == REFrostedViewControllerDirectionRight)
-            self.calculatedMenuViewSize = CGSizeMake(self.contentViewController.view.frame.size.width - 50.0f, self.contentViewController.view.frame.size.height);
+            
+            
+            //If the device is an iPad (landscape), take 33% of the screen
+            if (IPAD) {
+                self.calculatedMenuViewSize = CGSizeMake(self.contentViewController.view.frame.size.width - (self.contentViewController.view.frame.size.width/1.5), self.contentViewController.view.frame.size.height);
+                
+            }
+            //If the device is an iPhone, take screen width - 50px
+            else{
+                self.calculatedMenuViewSize = CGSizeMake(self.contentViewController.view.frame.size.width - 50.0f, self.contentViewController.view.frame.size.height);
+            }
+        
         
         if (self.direction == REFrostedViewControllerDirectionTop || self.direction == REFrostedViewControllerDirectionBottom)
             self.calculatedMenuViewSize = CGSizeMake(self.contentViewController.view.frame.size.width, self.contentViewController.view.frame.size.height - 50.0f);
